@@ -19,3 +19,7 @@ CPT模型的源码地址：https://github.com/fastnlp/CPT
   
   ## 数据集
   [**Lcsts**](https://huggingface.co/datasets/suolyer/lcsts)
+  
+### Requirements:
+- pytorch==1.8.1
+- transformers==4.4.1
