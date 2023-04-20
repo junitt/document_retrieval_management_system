@@ -1,7 +1,6 @@
-from transformers import  BertTokenizer
+from transformers import  BartForConditionalGeneration,BertTokenizer
 import torch
 import argparse
-from modeling_cpt import CPTForConditionalGeneration
 from utils import get_pred
 if __name__=='__main__':
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -12,7 +11,7 @@ if __name__=='__main__':
     args = parser.parse_args()
     arg_dict=args.__dict__
     tokenizer = BertTokenizer.from_pretrained(arg_dict['model_path'])
-    model = CPTForConditionalGeneration.from_pretrained(arg_dict['model_path']).to(device)
+    model = BartForConditionalGeneration.from_pretrained(arg_dict['model_path']).to(device)
     lines=""
     input_doc=""
     for line in open(arg_dict['file_path'],'r',encoding="UTF-8"):

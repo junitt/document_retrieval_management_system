@@ -15,12 +15,12 @@ def mylcs(lst1:list,lst2:list):
             ans=max(ans,dp[i][j])
     return ans
 
-def get_pred(tokenizer,model,story,sum_min_len=8):
+def get_pred(tokenizer,model,story,sum_min_len=8,device="cuda"):
     tok_len=min(1000,len(tokenizer(story)["input_ids"])+5)
     dct = tokenizer.batch_encode_plus([story], max_length=tok_len,return_tensors="pt",padding='max_length',truncation=True)
     summaries = model.generate(
-        input_ids=dct["input_ids"].to('cuda'),
-        attention_mask=dct["attention_mask"].to('cuda'),
+        input_ids=dct["input_ids"].to(device),
+        attention_mask=dct["attention_mask"].to(device),
         num_beams=4,
         length_penalty=1.0,
         max_length=tok_len+2, 

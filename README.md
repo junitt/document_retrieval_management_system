@@ -16,3 +16,6 @@ python predict.py --model_path /path/to/model --file_path /path/to/file/
 ## 模型  
 [**CPT: A Pre-Trained Unbalanced Transformer for Both Chinese Language Understanding and Generation**](https://arxiv.org/pdf/2109.05729.pdf)  
 CPT模型的源码地址：https://github.com/fastnlp/CPT
+  
+  ## 数据集
+  [**Lcsts**](https://huggingface.co/datasets/suolyer/lcsts)
