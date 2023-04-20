@@ -15,7 +15,7 @@ if __name__=='__main__':
     model = CPTForConditionalGeneration.from_pretrained(arg_dict['model_path']).to(device)
     lines=""
     input_doc=""
-    for line in open(arg_dict['file_path'],'r'):
+    for line in open(arg_dict['file_path'],'r',encoding="UTF-8"):
         lines+=line
     for sent in lines.split("\n"):
         input_doc+=sent
