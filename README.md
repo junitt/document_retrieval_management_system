@@ -7,3 +7,13 @@
 需的信息。此外，系统还支持对于知识元的管理，知识元和技术方案唯一绑定。
 该系统还拥有技术方案自动生成的功能。通过算法分析，系统能够在新建工程项
 目时，通过和历史案例资料的相似度对比，自动生成技术方案。
+
+##生成摘要
+```
+python predict.py --model_path /path/to/model --file_path /path/to/file/
+```
+
+##模型
+[**CPT: A Pre-Trained Unbalanced Transformer for Both Chinese Language Understanding and Generation**](https://arxiv.org/pdf/2109.05729.pdf)
+
+CPT模型的源码地址：https://github.com/fastnlp/CPT
