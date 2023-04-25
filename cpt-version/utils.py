@@ -1,5 +1,6 @@
 from transformers import  BertTokenizer
 import torch
+import numpy as np
 def mylcs(lst1:list,lst2:list):
     ans=0
     n=len(lst1)
@@ -43,6 +44,18 @@ def get_vec(device,model,tokenizer,article):
                     return_dict =True
                 )
             return output[3][0].reshape(-1,)
+
+def get_vec_avg(device,model,tokenizer,article,max_length=1000):
+    dct = tokenizer.batch_encode_plus([article], max_length=max_length, return_tensors="pt",padding='max_length',truncation=True)
+    with torch.no_grad():
+            output=model(
+                    input_ids=dct['input_ids'].to(device),
+                    attention_mask=dct['attention_mask'].to(device),
+                    output_hidden_states=True,
+                    return_dict =True
+                )
+            arr=np.mean(np.array(output[3][0].cpu()),axis=0)
+            return arr.reshape(-1,)
 
 def calc_rouge_l(tokenizer:BertTokenizer,candidate:str,ref:str):
     lst_can=tokenizer(candidate,add_special_tokens=False)['input_ids']
