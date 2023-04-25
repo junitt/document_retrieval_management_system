@@ -1,4 +1,5 @@
 from transformers import  BertTokenizer
+import torch
 def mylcs(lst1:list,lst2:list):
     ans=0
     n=len(lst1)
@@ -15,7 +16,7 @@ def mylcs(lst1:list,lst2:list):
             ans=max(ans,dp[i][j])
     return ans
 
-def get_pred(tokenizer,model,story,sum_min_len=8,device="cuda"):
+def get_pred(tokenizer,model,story,sum_min_len=8,device='cuda'):
     tok_len=min(1000,len(tokenizer(story)["input_ids"])+5)
     dct = tokenizer.batch_encode_plus([story], max_length=tok_len,return_tensors="pt",padding='max_length',truncation=True)
     summaries = model.generate(
@@ -26,11 +27,22 @@ def get_pred(tokenizer,model,story,sum_min_len=8,device="cuda"):
         max_length=tok_len+2, 
         min_length=sum_min_len,
         no_repeat_ngram_size=3,
-        do_sample=False,
+        do_sample=True,
     )  # change these arguments if you want
 
     dec = [tokenizer.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=False) for g in summaries]
     return dec
+
+def get_vec(device,model,tokenizer,article):
+    dct = tokenizer.batch_encode_plus([article], max_length=1000, return_tensors="pt",padding='max_length',truncation=True)
+    with torch.no_grad():
+            output=model(
+                    input_ids=dct['input_ids'].to(device),
+                    attention_mask=dct['attention_mask'].to(device),
+                    output_hidden_states=True,
+                    return_dict =True
+                )
+            return output[3][0].reshape(-1,)
 
 def calc_rouge_l(tokenizer:BertTokenizer,candidate:str,ref:str):
     lst_can=tokenizer(candidate,add_special_tokens=False)['input_ids']
