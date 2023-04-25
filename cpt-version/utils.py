@@ -47,7 +47,7 @@ def get_mat(device,model,tokenizer,article,max_length=1000):
 
 def get_vec(device,model,tokenizer,article,max_length=1000):
     mat=get_mat(device,model,tokenizer,article,max_length)
-    return mat.reshape(-1,)
+    return np.array(mat).reshape(-1,)
 
 def get_vec_avg(device,model,tokenizer,article,max_length=1000):
     mat=get_mat(device,model,tokenizer,article,max_length)
