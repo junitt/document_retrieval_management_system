@@ -34,7 +34,7 @@ def get_pred(tokenizer,model,story,sum_min_len=8,device='cuda'):
     dec = [tokenizer.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=False) for g in summaries]
     return dec
 
-def get_vec(device,model,tokenizer,article):
+def get_mat(device,model,tokenizer,article,max_length=1000):
     dct = tokenizer.batch_encode_plus([article], max_length=1000, return_tensors="pt",padding='max_length',truncation=True)
     with torch.no_grad():
             output=model(
@@ -43,19 +43,16 @@ def get_vec(device,model,tokenizer,article):
                     output_hidden_states=True,
                     return_dict =True
                 )
-            return output[3][0].reshape(-1,)
+            return output[3][0].cpu()
+
+def get_vec(device,model,tokenizer,article,max_length=1000):
+    mat=get_mat(device,model,tokenizer,article,max_length)
+    return mat.reshape(-1,0)
 
 def get_vec_avg(device,model,tokenizer,article,max_length=1000):
-    dct = tokenizer.batch_encode_plus([article], max_length=max_length, return_tensors="pt",padding='max_length',truncation=True)
-    with torch.no_grad():
-            output=model(
-                    input_ids=dct['input_ids'].to(device),
-                    attention_mask=dct['attention_mask'].to(device),
-                    output_hidden_states=True,
-                    return_dict =True
-                )
-            arr=np.mean(np.array(output[3][0].cpu()),axis=0)
-            return arr.reshape(-1,)
+    mat=get_mat(device,model,tokenizer,article,max_length)
+    arr=np.mean(np.array(mat),axis=0)
+    return arr.reshape(-1,)
 
 def calc_rouge_l(tokenizer:BertTokenizer,candidate:str,ref:str):
     lst_can=tokenizer(candidate,add_special_tokens=False)['input_ids']
