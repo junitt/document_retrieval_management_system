@@ -39,10 +39,10 @@ def calc_score():
     for ( stories, refers) in tqdm(test_dataloader):
         rec=get_pred_and_ref(stories, refers)
         for i in range(len(rec['pred'])):
-            vald=calc_rouge_l(tokenizer=tokenizer,candidate=rec['pred'][i],ref=rec['reference'][i])
-            #vald=compute_metrics(decoded_preds=rec['pred'][i],decoded_labels=rec['reference'][i])
+            #vald=calc_rouge_l(tokenizer=tokenizer,candidate=rec['pred'][i],ref=rec['reference'][i])
+            vald=compute_metrics(decoded_preds=rec['pred'][i],decoded_labels=rec['reference'][i])
             total+=1
-            ans+=vald
+            ans+=vald['rouge-l']
     print(ans*1.0/total)
 
 if __name__=='__main__':

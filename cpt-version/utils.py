@@ -1,6 +1,7 @@
 from transformers import  BertTokenizer
 import torch
 import numpy as np
+from rouge_chinese import Rouge
 def mylcs(lst1:list,lst2:list):
     ans=0
     n=len(lst1)
@@ -23,7 +24,7 @@ def get_pred(tokenizer,model,story,sum_min_len=8,device='cuda'):
     summaries = model.generate(
         input_ids=dct["input_ids"].to(device),
         attention_mask=dct["attention_mask"].to(device),
-        num_beams=4,
+        num_beams=6,
         length_penalty=1.0,
         max_length=tok_len+2, 
         min_length=sum_min_len,
@@ -65,5 +66,30 @@ def calc_rouge_l(tokenizer:BertTokenizer,candidate:str,ref:str):
     if x==0:
         return x
     return 2*r*p/(r+p)
+
+rouge=Rouge()
+def postprocess_text(preds, labels):
+    preds = [pred.strip() for pred in preds]
+
+    # # rougeLSum expects newline after each sentence
+    # preds = ["\n".join(nltk.sent_tokenize(pred)) for pred in preds]
+    # labels = ["\n".join(nltk.sent_tokenize(label)) for label in labels]
+
+    ret=""
+    for pred in preds:
+        if pred != '':
+            ret+=pred
+
+    return ret, labels
+
+def compute_metrics(decoded_preds,decoded_labels):
+    decoded_preds, decoded_labels = postprocess_text(decoded_preds, decoded_labels)
+    scores = rouge.get_scores(decoded_preds, decoded_labels,avg=True)
+    for key in scores:
+        scores[key]=scores[key]['f']*100
+
+    result=scores
+
+    return result
 #中 国 零 售 企 业 营 业 收 入 最 高
 #家电专业店营收增长净利润下滑
