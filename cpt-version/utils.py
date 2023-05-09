@@ -27,7 +27,7 @@ def get_pred(tokenizer,model,story,sum_min_len=8,device='cuda'):
         length_penalty=1.0,
         max_length=tok_len+2, 
         min_length=sum_min_len,
-        no_repeat_ngram_size=3,
+        no_repeat_ngram_size=2,
         do_sample=True,
     )  # change these arguments if you want
 
