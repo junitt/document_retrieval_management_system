@@ -22,7 +22,7 @@ CPT模型的源码地址：https://github.com/fastnlp/CPT
 
 ## 多文本摘要算法参考论文
 [**Adapting the Neural Encoder-Decoder Framework from Single to Multi-Document Summarization**]
-(https://arxiv.org/abs/1808.06218)  
+(https://arxiv.org/pdf/1808.06218)  
 
 ### Requirements:
 - pytorch==1.8.1
