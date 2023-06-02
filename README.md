@@ -10,7 +10,7 @@
   
 ## 生成摘要
 ```
-python predict.py --model_path /path/to/model --file_path /path/to/file/
+python predict.py --model_path /path/to/model --file_path /path/to/file/ --file__type 1 --svr_dir ./svr
 ```  
 
 ## 模型  
