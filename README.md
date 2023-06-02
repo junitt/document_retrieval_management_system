@@ -24,3 +24,6 @@ CPT模型的源码地址：https://github.com/fastnlp/CPT
 - pytorch==1.8.1
 - transformers==4.4.1
 - packaging==21.3
+- rouge-chinese
+- numpy==1.20.1
+- scikit-learn==0.24.1
